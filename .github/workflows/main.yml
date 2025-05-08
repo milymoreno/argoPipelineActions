@@ -1,51 +1,50 @@
-on:
-    push:
-      branches:
-        - main
-  
-  name: cicd
-  env:
-    IMAGE_NAME: "milymoreno/argoPipelineActions"
-    IMAGE_TAG: "1.0.1"
-    GIT_USER_EMAIL: "milydemendoza@gmail.com"
-    GIT_USER_NAME: "milydemoreno"
-   
-  jobs:
-    cicd:
-      runs-on: ubuntu-latest
-      steps:
-        -
-          name: Set up QEMU
-          uses: docker/setup-qemu-action@v3
-        -
-          name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v3
-        -
-          name: Login to Docker Hub
-          uses: docker/login-action@v3
-          with:
-            username: ${{ secrets.DOCKERHUB_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_TOKEN }}
-        -
-          name: Build and push
-          uses: docker/build-push-action@v6
-          with:
-            push: true
-            tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-        -
-          name: Checkout code
-          uses: actions/checkout@v3
-        - 
-          name: Update image version in deployment YAML
-          run: |
-            sed -i "s|image: milymoreno/argoPipelineActions:.*|image: milymoreno/argoPipelineActions:${{ env.IMAGE_TAG }}|g" manifest/deployment.yaml
-        -
-          name: Push new image
-          run: |
-            git config --global user.email "${{ env.GIT_USER_EMAIL }}"
-            git config --global user.name "${{ env.GIT_USER_NAME }}"
-            git remote set-url origin "https://x-access-token:${{ secrets.TOKEN }}@github.com//github.com/milymoreno/argoPipelineActions.git"           
-            git add manifest/deployment.yaml
-            git commit -m "Update to version ${{ env.IMAGE_TAG }}"
-            git push origin main
+name: cicd
 
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: "milymoreno/argoPipelineActions"
+  IMAGE_TAG: "1.0.1"
+  GIT_USER_EMAIL: "milydemendoza@gmail.com"
+  GIT_USER_NAME: "milydemoreno"
+
+jobs:
+  cicd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+      - name: Update image tag in deployment.yaml
+        run: |
+          sed -i "s|image: milymoreno/argoPipelineActions:.*|image: milymoreno/argoPipelineActions:${{ env.IMAGE_TAG }}|g" manifest/deployment.yaml
+
+      - name: Push updated manifest to repo
+        run: |
+          git config --global user.email "${{ env.GIT_USER_EMAIL }}"
+          git config --global user.name "${{ env.GIT_USER_NAME }}"
+          git remote set-url origin "https://x-access-token:${{ secrets.TOKEN }}@github.com/milymoreno/argoPipelineActions.git"
+          git add manifest/deployment.yaml
+          git diff --quiet || git commit -m "Update to version ${{ env.IMAGE_TAG }}"
+          git push origin main
