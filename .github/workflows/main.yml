@@ -1,4 +1,4 @@
-name: cicd
+name: deploy-guestbook-lab
 
 on:
   push:
@@ -12,7 +12,7 @@ env:
   GIT_USER_NAME: "milymoreno"
 
 jobs:
-  cicd:
+  argo_ci_cd:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
