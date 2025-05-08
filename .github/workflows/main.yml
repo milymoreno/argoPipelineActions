@@ -1,4 +1,4 @@
-name: deploy-argocdproj
+name: cicd
 on:
   push:
     branches:
