@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mily-guestbook-lab-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mily-guestbook-lab
+  template:
+    metadata:
+      labels:
+        app: mily-guestbook-lab
+    spec:
+      containers:
+      - image: milymoreno/mily-guestbook-lab:1.0.0
+        name: mily-guestbook-lab
+        ports:
+        - containerPort: 8080
+          name: http
