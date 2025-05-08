@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mily-guestbook-lab
+  namespace: argocd
+spec:
+  project: default
+  source: 
+    repoURL: https://github.com/milymoreno/argoPipelineActions.git
+    targetRevision: HEAD
+    path: manifest
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
