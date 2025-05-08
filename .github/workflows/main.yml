@@ -44,7 +44,9 @@ jobs:
         run: |
           git config --global user.email "${{ env.GIT_USER_EMAIL }}"
           git config --global user.name "${{ env.GIT_USER_NAME }}"        
-          git remote set-url origin "https://x-access-token:${{ secrets.TOKEN_PAT }}@github.com/${{ github.repository }}.git"
+       
+          git remote set-url origin "https://${{ secrets.TOKEN_PAT }}@github.com/${{ github.repository }}.git"
+
           git add manifest/deployment.yaml
           git diff --quiet || git commit -m "Update to version ${{ env.IMAGE_TAG }}"
           git push origin main
