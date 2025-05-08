@@ -4,6 +4,7 @@ resources:
   - deployment.yaml
   - ingress.yaml
   - service.yaml
+  #- persistent-volume-claim.yaml
 
 commonLabels:
   app: mily-guestbook-lab
