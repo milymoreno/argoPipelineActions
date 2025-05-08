@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  IMAGE_NAME: "milymoreno/argoPipelineActions"
+  IMAGE_NAME: milydemendoza/argocd-demo-app
   IMAGE_TAG: "1.0.1"
   GIT_USER_EMAIL: "milydemendoza@gmail.com"
   GIT_USER_NAME: "milydemoreno"
@@ -38,7 +38,7 @@ jobs:
 
       - name: Update image tag in deployment.yaml
         run: |
-          sed -i "s|image: milymoreno/argoPipelineActions:.*|image: milymoreno/argoPipelineActions:${{ env.IMAGE_TAG }}|g" manifest/deployment.yaml
+          sed -i "s|image: milydemendoza/.*|image: milydemendoza/guestbook-lab:${{ env.IMAGE_TAG }}|g" manifest/deployment.yaml
 
       - name: Push updated manifest to repo
         run: |
