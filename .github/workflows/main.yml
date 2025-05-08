@@ -7,7 +7,7 @@ on:
 
 env:
   IMAGE_NAME: milydemendoza/guestbook-lab
-  IMAGE_TAG: "1.0.1"
+  IMAGE_TAG: "1.0.3"
   GIT_USER_EMAIL: "milydemendoza@gmail.com"
   GIT_USER_NAME: "milymoreno"
 

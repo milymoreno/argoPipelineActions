@@ -15,7 +15,7 @@ spec:
       automountServiceAccountToken: false
       containers:
        - name: guestbook-lab
-         image: milydemendoza/guestbook-lab:1.0.1
+         image: milydemendoza/guestbook-lab:1.0.3
          resources:
            requests:
              cpu: "500m"
