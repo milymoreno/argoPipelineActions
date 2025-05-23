@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  IMAGE_NAME: milydemendoza/guestbook-lab
+  IMAGE_NAME: milydemendoza/guestbook-docker-lab
   IMAGE_TAG: "1.0.3"
   GIT_USER_EMAIL: "milydemendoza@gmail.com"
   GIT_USER_NAME: "milymoreno"
